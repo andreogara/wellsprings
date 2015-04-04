@@ -1,0 +1,9 @@
+.hook{
+    width: 1000px;
+    height: auto;
+}
+.table thead tr td{
+    text-decoration: underline;
+    color: blue;
+    cursor: pointer;
+}

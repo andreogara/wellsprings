@@ -16,7 +16,7 @@ $trains = array();
             }
             else{
                 if(move_uploaded_file($_FILES['file']['tmp_name'], $targetFile)){
-                    echo "Success! Click <a href='http://localhost/wellsprings/index.php'>here</a> to continue...";
+                    echo "Success! Click <a href='https://wellsprings.herokuapp.com/'>here</a> to continue...";
                 }
                 else{
                     echo "Sorry your file has not been uploaded again...";

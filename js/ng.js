@@ -1,7 +1,9 @@
-var wellSprings = angular.module('wellSprings', ['ngAnimate']);
+var wellSprings = angular.module('wellSprings', ['ngAnimate', 'xeditable']);
+wellSprings.run(function(editableOptions){
+    editableOptions.theme = 'bs3';
+});
 //Initializing the data and populating the offline database
 //Controller for the list Page
-
 wellSprings.filter('offset', function(){
         return function(input, start) {
             start = +start; //parse to int
@@ -9,13 +11,13 @@ wellSprings.filter('offset', function(){
         };
 
 });
-
 wellSprings.controller("ListController", ['$scope', 'dataFactory', function ($scope, dataFactory){
     $scope.itemsPerPage = 5;
     $scope.currentPage = 0;
     $scope.pageSize = 5;
     $scope.order = "runNumber";
-    try{
+    $scope.data = null;
+    if (dataFactory.getData()){
         dataFactory.getData().then(function(result){
             var data = result.data;
             var cleanData = function(data){
@@ -25,24 +27,21 @@ wellSprings.controller("ListController", ['$scope', 'dataFactory', function ($sc
                         collection.push(value.runNumber);
                         cleanArray.push(value);
                     }
-                    else{
-                        console.log("Rejected run Number "+value.runNumber);
-                    }
                 });
                 return cleanArray;
             }
-            $scope.data = cleanData(data);
+            return cleanData(data);
+        }).then(function(result){
+            $scope.data =  result;
             $scope.checked = true;
-            console.log($scope.data);
-            $scope.numberOfPages=function(){
-                return Math.ceil($scope.data.length/$scope.pageSize);
-            }
         });
     }
-    catch(err){
-        console.log(err.message);
+    $scope.numberOfPages=function(){
+        return Math.ceil($scope.data.length/$scope.pageSize);
     }
-
+    $scope.$watch('data', function() {
+        console.log('It just changed bitch!!!' +$scope.data);
+    });
 }]);
 wellSprings.factory("dataFactory", ['$http', '$log', '$q', function($http, $log, $q) {
     var deferred = $q.defer();
@@ -65,9 +64,6 @@ wellSprings.factory("dataFactory", ['$http', '$log', '$q', function($http, $log,
                     deferred.resolve({
                         data: trainArray
                     });
-                }
-                else{
-                    deferred.reject("Data Not Yet Loaded");
                 }
                 return deferred.promise;
             }

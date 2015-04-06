@@ -11,12 +11,10 @@
 <form class="form-inline" role="form" action="php/functions.php" method="post" enctype="multipart/form-data">
   <div class="form-group">
     <label for="file">Select CSV File to Upload:</label>
-    <input type="file" class="form-control" name="file"/>
+    <input type="file" class="form-control" name="file" required/>
   </div>
   <button type="submit" class="btn btn-default" name="submit">Upload</button>
 </form>
-
-
 <?php
 if (isset($_SESSION["trains"])){
     $data = json_encode($_SESSION["trains"]);
@@ -31,6 +29,7 @@ if (isset($_SESSION["trains"])){
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-route.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-animate.js"></script>
+<script src="js/xeditable.js"></script>
 <script src="js/ng.js"></script>
 <script src="js/script.js"></script>
 </body>
